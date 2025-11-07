@@ -83,18 +83,10 @@ UNION-based SQL injection assaults enable the analyzer to extract data from the 
 we will be using the “User Info” page from Mutillidae to perform a Union-Based SQL injection attack. Go to “OWASP Top 10/A1 — Injection/SQLi — Extract-Data/User Info” 
 
 After logging out, Now choose the menu as shown below:
+<img width="1915" height="592" alt="image" src="https://github.com/user-attachments/assets/54ff40a7-6d7f-49e7-b75e-71c479e3cba2" />
+
 
 ![img](Screenshot_2023-06-10_13_13_23.png)
-![Screenshot 2023-06-10 224221](https://github.com/praveenst13/sqlinjection/assets/118787793/123993df-2a2b-455f-abde-8904a72314dd)
-
-
-![Screenshot 2023-06-10 224420](https://github.com/praveenst13/sqlinjection/assets/118787793/9b365f7e-d511-4ff4-a5fb-d33ee779cb86)
-
-![Screenshot 2023-06-10 224452](https://github.com/praveenst13/sqlinjection/assets/118787793/7b70cf08-aa04-4ba1-b7e5-12f048c98c57)
-
-![Screenshot 2023-06-10 224520](https://github.com/praveenst13/sqlinjection/assets/118787793/713a7087-4c4a-49a0-8c23-92af437df4b1)
-
-![Screenshot 2023-06-10 224530](https://github.com/praveenst13/sqlinjection/assets/118787793/a242176f-df4f-4eb2-8296-0671fd7d7264)
 
 From this point, all our attack vectors will be performed in the URL section of the page using the Union-Based technique.There are two different ways to discover how many columns are selected by the original query. The first is to infuse an “ORDER BY” statement indicating a column number. Given the column number specified is higher than the number of columns in the “SELECT” statement, an error will be returned.
 
@@ -125,21 +117,21 @@ When we ordered by 5, it worked and displayed some information. It means there a
  As it is having 5 columns the query worked fine and it provides the correct result
 
 
-![Screenshot 2023-06-10 224939](https://github.com/praveenst13/sqlinjection/assets/118787793/7a660480-5cb6-4d86-acd1-08f7a4d5e2fa)
 
 
 Instead of using the "order by" option, let’s use the "union select" option and provide all five columns. Ex: (union select 1,2,3,4,5)
 
 ![Screenshot 2023-06-10 225037](https://github.com/praveenst13/sqlinjection/assets/118787793/1c7ac260-3410-4f75-8091-2cda6b7f20c0)
 As given in the screenshot below columns 2,3,4 are usable in which we can substitute any sql commands to extract necessary information.
-![Screenshot 2023-06-10 225105](https://github.com/praveenst13/sqlinjection/assets/118787793/12ebac90-8efb-4558-a442-541029220fa3)
+
  Now we will substitute some few commands like database(), user(), version() to obtain the information regarding the database name, username and version of the database.
 
 http://192.168.43.145/mutillidae/index.php?page=user-info.php&username=praveen%27union%20select%201,database(),user(),version(),5%23&password=&user-info-php-submit-button=View+Account+Details
+<img width="1548" height="709" alt="image" src="https://github.com/user-attachments/assets/0084b319-a06d-4c6f-ad38-2845ae879a18" />
 
 
 
-![Screenshot 2023-06-10 225314](https://github.com/praveenst13/sqlinjection/assets/118787793/78ba6fc7-7ab6-4c39-8a7f-c8e4240775b8)
+
 
 The url when executed, we obtain the necessary information about the database name owasp10, username as root@localhost and version as 5.0.51a-3ubuntu5.
 In MySQL, the table “information_schema.tables” contains all the metadata identified with table items. Below is listed the most useful information on this table.
@@ -166,12 +158,11 @@ Here we are trying to extract column names from the “accounts” table.
 
 
 
-![Screenshot 2023-06-10 225659](https://github.com/praveenst13/sqlinjection/assets/118787793/c820f87a-30cb-485b-b423-f6fd0e67c96e)
+
 The column names of the accounts is displayed below for the following url:
 
 http://192.168.43.145/mutillidae/index.php?page=user-info.php&username=praveen%27union%20select%201,column_name,null,null,5%20from%20information_schema.columns%20where%20table_name=%27accounts%27%23&password=&user-info-php-submit-button=View+Account+Details 
 
-![Screenshot 2023-06-10 225659](https://github.com/praveenst13/sqlinjection/assets/118787793/c820f87a-30cb-485b-b423-f6fd0e67c96e)
 
 
 
@@ -183,7 +174,7 @@ Ex: (union select 1,username,password,is_admin,5 from accounts).
 
 http://192.168.1.9/mutillidae/index.php?page=user-info.php&username=praveen%27union%20select%201,username,password,is_admin,5%20from%20accounts%23&password=&user-info-php-submit-button=View+Account+Details
 
-![Screenshot 2023-06-10 225759](https://github.com/praveenst13/sqlinjection/assets/118787793/f7dd79fb-c11c-41f3-8019-06685e9cd759)
+
 
 
 ## Reading and writing files on the web-server
@@ -193,7 +184,8 @@ Ex: (union select null,load_file(‘/etc/passwd’),null,null,null).
 
 http://192.168.1.9/mutillidae/index.php?page=user-info.php&username=praveen%27union%20select%20null,load_file(%27/etc/passwd%27),null,null,null%23&password=&user-info-php-submit-button=View+Account+Details
 
-![Screenshot 2023-06-10 225846](https://github.com/praveenst13/sqlinjection/assets/118787793/13f4a113-06fc-4d62-a8ec-6525c4ec1343)
+<img width="1280" height="417" alt="image" src="https://github.com/user-attachments/assets/8fe84d27-df01-4969-aad6-56c55a52c07d" />
+
 
 the “INTO_OUTFILE()” operator for all that they offer and attempt to root the objective server by transferring a shell-code through SQL infusion. we will write a “Hello World!” sentence and output it in the “/tmp/” directory as a “hello.txt” file. This “Hello World!” sentence can be substituted with any PHP shell-code that you want to execute in the target server.
 Ex: (union select null,’Hello World!’,null,null,null into outfile ‘/tmp/hello.txt’).
